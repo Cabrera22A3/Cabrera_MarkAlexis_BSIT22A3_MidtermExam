@@ -77,12 +77,12 @@ fun HeaderBackground(){
 fun RandomImageWithButton(modifier: Modifier = Modifier) {
     var result by remember { mutableStateOf(1) }
     val imageResource = when (result) {
-        1 -> R.drawable.apple
-        //2 -> R.drawable.dice_2
+        1 -> R.drawable.pikachu
+        2 -> R.drawable.bulbasaur
         //3 -> R.drawable.dice_3
         //4 -> R.drawable.dice_4
         //5 -> R.drawable.dice_5
-        else -> R.drawable.apple
+        else -> R.drawable.squirtle
     }
 }
 
