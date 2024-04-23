@@ -8,9 +8,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,6 +27,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cabrera_markalexis_bsit22a3_midtermexam.ui.theme.Cabrera_MarkAlexis_BSIT22A3_MidtermExamTheme
@@ -46,19 +53,37 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainApp(){
     Column {
-        Row {
-            Column(
-                modifier = Modifier
-                    .background(color = Color.DarkGray)
-                    .padding(all = 16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                HeaderBackground()
-            }
+        Row (
+            modifier = Modifier
+                .background(color = Color.Red)
+                .padding(all = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            HeaderBackground()
         }
-        Row {
-
+        Row (
+            modifier = Modifier
+                .background(color = Color.DarkGray)
+                .padding(all = 16.dp)
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            TryBodyContent()
+        }
+        Row (
+            modifier = Modifier
+                .background(color = Color.DarkGray)
+                .padding(all = 16.dp)
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            TryFooter()
         }
     }
 
@@ -73,6 +98,22 @@ fun HeaderBackground(){
     Text(text = "Header")
 }
 
+@Composable
+fun TryBodyContent(){
+    Text(text = "Body Content")
+}
+
+@Composable
+fun TryFooter(){
+    Text(
+        text = "Name:",
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.BottomCenter)
+            .padding(bottom = 60.dp)
+    )
+}
+
 @Composable//dito nangyayari yung pagdisplay ng dice image
 fun RandomImageWithButton(modifier: Modifier = Modifier) {
     var result by remember { mutableStateOf(1) }
@@ -83,6 +124,25 @@ fun RandomImageWithButton(modifier: Modifier = Modifier) {
         //4 -> R.drawable.dice_4
         //5 -> R.drawable.dice_5
         else -> R.drawable.squirtle
+    }
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(id = imageResource), contentDescription = result.toString()
+        )
+        Button(
+            onClick = {//dito nangyayari yung pagbigay ng randomise numbers from 1-6
+                result = (1..6).random()
+            }
+        ) {//since naglagay ng button ung text yung nagsisilbi kung para saan yung button
+            Text(stringResource(R.string.name1))
+        }
+        Spacer(//para siyang margin para sa button
+            modifier = Modifier
+                .height(16.dp)
+        )
     }
 }
 
