@@ -33,8 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cabrera_markalexis_bsit22a3_midtermexam.ui.theme.Cabrera_MarkAlexis_BSIT22A3_MidtermExamTheme
 
 class MainActivity : ComponentActivity() {
@@ -56,10 +59,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainApp(){
-
-    var QuestionOpen by remember { mutableStateOf(0) }
-    var score by remember{ mutableStateOf(0) }
-
     Column {
         Row (
             modifier = Modifier
@@ -76,22 +75,21 @@ fun MainApp(){
                 .background(color = Color.DarkGray)
                 .padding(all = 8.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxHeight(.92f),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ){
-            BodyContent()
+            SwitchScreen()
         }
         Row (
             modifier = Modifier
-                .background(color = Color.DarkGray)
+                .background(color = Color.Blue)
                 .padding(all = 16.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.Center
         ){
-            TryFooter()
+            Footer()
         }
     }
 
@@ -99,6 +97,208 @@ fun MainApp(){
 
 
 
+}
+
+@Composable
+fun SwitchScreen(){
+    //var score by remember{ mutableStateOf(0) }
+    //var QuizDone by remember{mutableStateOf(false)}
+    //BodyContentHome()
+    //BodyContentAbout()
+    BodyContentGame()
+}
+
+@Composable
+fun BodyContentHome(modifier: Modifier = Modifier){
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row{
+            //Image Who's that Pokemon?
+            Image(
+                painter = painterResource(id = R.drawable.wtpokemon),
+                contentDescription = "WTPokemon_Home"
+            )
+        }
+        Row {
+            //Start now Button
+            Button(
+                onClick = {}
+            ) {
+                Text(stringResource(R.string.startnow_btn))
+            }
+            Spacer(//para siyang margin para sa button
+                modifier = Modifier
+                    .height(16.dp)
+            )
+        }
+        Row {
+            //About Button
+            Button(
+                onClick = {}
+            ) {
+                Text(stringResource(R.string.about_btn))
+            }
+            Spacer(//para siyang margin para sa button
+                modifier = Modifier
+                    .height(16.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun BodyContentAbout(modifier: Modifier = Modifier){
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    )  {
+        Row {
+            //Image Who's that Pokemon?
+            Image(
+                painter = painterResource(id = R.drawable.wtpokemon),
+                contentDescription = "WTPokemon_Home"
+            )
+        }
+        Row {
+            //Name, Section, Subject.
+            Text(
+                text = "Name: Mark Alexis Jaudian Cabrera\nSection: BSIT-22A3\nSubject: Mobile Computing",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .wrapContentSize(Alignment.TopCenter)
+                    .align(Alignment.Top)
+            )
+        }
+        Row {
+            //Description about the game.
+            Text(
+                text = "This game was created by the use of Android Studio Application."+
+                        " The things that I used in this code are Text, TextField, Column,"+
+                        " Row, and some modifier to make my UI to be aligned into the center.",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Justify,
+                modifier = Modifier
+                    .wrapContentSize(Alignment.TopCenter)
+                    .align(Alignment.Top)
+                    .padding(start = 20.dp, end = 20.dp, top = 15.dp)
+            )
+        }
+        Row {
+            //Back Button
+            Button(
+                onClick = {}
+            ) {
+                Text(stringResource(R.string.back_btn))
+            }
+            Spacer(//para siyang margin para sa button
+                modifier = Modifier
+                    .height(16.dp)
+            )
+        }
+    }
+}
+
+@Composable//dito nangyayari yung pagdisplay ng POKEMON
+fun BodyContentGame(modifier: Modifier = Modifier) {
+    var result by remember { mutableStateOf(3) }
+    val imageResource = when (result) {
+        1 -> R.drawable.pikachu
+        2 -> R.drawable.bulbasaur
+        else -> R.drawable.squirtle
+    }
+    val pokemonName = when (result) {
+        1 -> R.string.pikachu
+        2 -> R.string.bulbasaur
+        else -> R.string.squirtle
+    }
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .background(color = Color.White)
+                .fillMaxHeight(.3f)
+                .fillMaxWidth(.8f)
+        ){
+            Image(
+                painter = painterResource(id = imageResource),
+                contentDescription = result.toString()
+            )
+            Spacer(//para siyang margin para sa button
+                modifier = Modifier
+                    .height(20.dp)
+            )
+        }
+        Row {
+            val answer = remember { mutableStateOf("") }
+
+            TextField(
+                value = answer.value, // Set the current value from the state variable
+                onValueChange = { answer.value = it }, // Update state on value change
+                label = { Text("Enter your answer..") },
+                modifier = Modifier
+                    .fillMaxWidth(.8f)
+                    .padding(top = 10.dp, bottom = 10.dp)
+            )
+            Spacer(//para siyang margin para sa button
+                modifier = Modifier
+                    .height(16.dp)
+                )
+        }
+        Row {
+            Column {
+                Button(onClick = {}){
+                    Text(stringResource(R.string.check_btn))
+                }
+            }
+            Column {
+                Button(onClick = {}){
+                    Text(stringResource(R.string.startnow_btn))
+                }
+            }
+        }
+        Row {
+            Column {
+                Button(
+                    onClick = {}
+                ){
+                    Text(stringResource(R.string.prev_btn))
+                }
+            }
+            Column {
+                Button(
+                    onClick = {}
+                ){
+                    Text(stringResource(R.string.exit_btn))
+                }
+            }
+            Column {
+                Button(//dito nangyayari yung pagbigay ng randomise numbers from 1-6
+                    onClick = {
+                        result = (1..3).random()
+                    }
+                ) {//since naglagay ng button ung text yung nagsisilbi kung para saan yung button
+                    Text(stringResource(R.string.next_btn))
+                }
+                Spacer(//para siyang margin para sa button
+                    modifier = Modifier
+                        .height(16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BodyContent(){
+    SwitchScreen()
 }
 
 @Composable
@@ -149,95 +349,17 @@ fun HeaderBackground(){
 }
 
 @Composable
-fun BodyContent(){
-    var QuizDone by remember{mutableStateOf(false)}
-    if(!QuizDone){
-        RandomImageWithButton()
-    }
-}
-
-@Composable
-fun TryFooter(){
+fun Footer(){
     Column {
         Row {
             Text(
-                text = "Name: Mark Alexis Jaudian Cabrera",
+                text = "All Rights Reserved 2024. @PokemonQuizGame!",
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.BottomCenter)
-                    .padding(bottom = 60.dp)
-            )
-        }
-        Row {
-            Text(
-                text = "Section: BSIT-22A3",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .wrapContentSize(Alignment.BottomCenter)
-                    .padding(bottom = 60.dp)
-            )
-        }
-    }
-}
+                    .wrapContentSize(Alignment.TopCenter)
+                    .align(Alignment.Top)
 
-@Composable//dito nangyayari yung pagdisplay ng dice image
-fun RandomImageWithButton(modifier: Modifier = Modifier) {
-    var result by remember { mutableStateOf(3) }
-    val imageResource = when (result) {
-        1 -> R.drawable.pikachu
-        2 -> R.drawable.bulbasaur
-        //3 -> R.drawable.dice_3
-        //4 -> R.drawable.dice_4
-        //5 -> R.drawable.dice_5
-        else -> R.drawable.squirtle
-    }
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row (
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(color = Color.White)
-                .fillMaxHeight(.3f)
-                .fillMaxWidth(.8f)
-        ){
-            Image(
-                painter = painterResource(id = imageResource),
-                contentDescription = result.toString()
-            )
-            Spacer(//para siyang margin para sa button
-                modifier = Modifier
-                    .height(20.dp)
-            )
-        }
-        Row {
-            val answer = remember { mutableStateOf("") }
-            TextField(
-                value = answer.value, // Set the current value from the state variable
-                onValueChange = { answer.value = it }, // Update state on value change
-                label = { Text("Enter your answer:") },
-                modifier = Modifier
-                    .fillMaxWidth(.8f)
-                    .padding(top = 10.dp, bottom = 10.dp)
-            )
-            Spacer(//para siyang margin para sa button
-                modifier = Modifier
-                    .height(16.dp)
-            )
-        }
-        Row {
-            Button(//dito nangyayari yung pagbigay ng randomise numbers from 1-6
-                onClick = {
-                    result = (1..6).random()
-                }
-            ) {//since naglagay ng button ung text yung nagsisilbi kung para saan yung button
-                Text(stringResource(R.string.confirm_btn))
-            }
-            Spacer(//para siyang margin para sa button
-                modifier = Modifier
-                    .height(16.dp)
             )
         }
     }
@@ -245,7 +367,7 @@ fun RandomImageWithButton(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun HomeScreenPreview() {
     Cabrera_MarkAlexis_BSIT22A3_MidtermExamTheme {
         MainApp()
     }

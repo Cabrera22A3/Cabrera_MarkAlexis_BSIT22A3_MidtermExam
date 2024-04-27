@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Cabrera_MarkAlexis_BSIT22A3_MidtermExam</string>
-    <string name="confirm_btn">Confirm</string>
+    <string name="check_btn">CHECK</string>
+    <string name="startnow_btn">START NOW</string>
+    <string name="about_btn">ABOUT</string>
+    <string name="back_btn">BACK</string>
+    <string name="exit_btn">EXIT</string>
+    <string name="next_btn">NEXT</string>
+    <string name="prev_btn">PREV</string>
+    <string name="wrong">WRONG</string>
+    <string name="correct">CORRECT</string>
+    <string name="pikachu">PIKACHU</string>
+    <string name="bulbasaur">BULBASAUR</string>
+    <string name="squirtle">SQUIRTLE</string>
 </resources>
