@@ -1,4 +1,5 @@
 <resources>
+    //Old String Names
     <string name="app_name">Cabrera_MarkAlexis_BSIT22A3_MidtermExam</string>
     <string name="check_btn">CHECK</string>
     <string name="startnow_btn">START NOW</string>
@@ -12,4 +13,13 @@
     <string name="pikachu">PIKACHU</string>
     <string name="bulbasaur">BULBASAUR</string>
     <string name="squirtle">SQUIRTLE</string>
+
+    //Title Names
+    <string name="title_app_pkmnquizgame">[ @PokemonQuizGame! ]</string>
+    <string name="title_about_pkmnquizgame">About @PokemonQuizGame!</string>
+    <string name="title_game_pkmnquizgame">Game @PokemonQuizGame!</string>
+    <string name="title_exit_pkmnquizgame">Exit @PokemonQuizGame!</string>
+
+    //Button Names
+    <string name="back_button">Back Button</string>
 </resources>

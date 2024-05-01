@@ -101,7 +101,7 @@ fun MainApp(){
 
 @Composable
 fun SwitchScreen(){
-    //var score by remember{ mutableStateOf(0) }
+    var clicked by remember{ mutableStateOf(0) }
     //var QuizDone by remember{mutableStateOf(false)}
     //BodyContentHome()
     //BodyContentAbout()
@@ -204,7 +204,8 @@ fun BodyContentAbout(modifier: Modifier = Modifier){
 
 @Composable//dito nangyayari yung pagdisplay ng POKEMON
 fun BodyContentGame(modifier: Modifier = Modifier) {
-    var result by remember { mutableStateOf(3) }
+    var clicked by remember { mutableStateOf(0) }
+    var result by remember { mutableStateOf(1) }
     val imageResource = when (result) {
         1 -> R.drawable.pikachu
         2 -> R.drawable.bulbasaur
@@ -260,7 +261,7 @@ fun BodyContentGame(modifier: Modifier = Modifier) {
             }
             Column {
                 Button(onClick = {}){
-                    Text(stringResource(R.string.startnow_btn))
+                    Text(stringResource(R.string.correct))
                 }
             }
         }
@@ -274,7 +275,7 @@ fun BodyContentGame(modifier: Modifier = Modifier) {
             }
             Column {
                 Button(
-                    onClick = {}
+                    onClick = {clicked = 3}
                 ){
                     Text(stringResource(R.string.exit_btn))
                 }
@@ -293,6 +294,19 @@ fun BodyContentGame(modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+    //kung 1 = check
+    //kung 2 = prev
+    //kung 3 = exit
+    //kung 4 = next
+    if(clicked == 1){
+        //
+    }else if (clicked == 2){
+        //
+    }else if (clicked == 3){
+        BodyContentHome()
+    }else if (clicked == 4){
+        //
     }
 }
 
