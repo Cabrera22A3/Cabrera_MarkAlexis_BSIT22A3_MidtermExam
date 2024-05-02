@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -27,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +36,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.cabrera_markalexis_bsit22a3_midtermexam.ui.theme.Cabrera_MarkAlexis_BSIT22A3_MidtermExamTheme
+
+//same idea sa Activity 8 pero tinanggal ko na po yung title since diko naman siya need
+enum class PKMNScreen{
+    homeScreen,
+    gameScreen,
+    aboutScreen
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +68,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//Dito makikita yung manipulation ng Rows and Cols para sa kabuuhan
 @Composable
 fun MainApp(){
     Column {
@@ -92,24 +104,28 @@ fun MainApp(){
             Footer()
         }
     }
+}
 
-
-
-
-
+//Dito yung paggamit ng Nav Host
+@Composable
+fun SwitchScreen(navController: NavHostController = rememberNavController()){
+    //triny ko gawing parang "string" yung pag call sa fun functions, pwede po pala yunnn
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = PKMNScreen.valueOf(
+        backStackEntry?.destination?.route ?: "homeScreen"
+    )
+    NavHost(
+        navController = navController,
+        startDestination = "homeScreen"
+    ) {
+        composable("homeScreen"){ BodyContentHome(navController = navController) }
+        composable("gameScreen"){ BodyContentGame(navController = navController) }
+        composable("aboutScreen"){ BodyContentAbout(navController = navController) }
+    }
 }
 
 @Composable
-fun SwitchScreen(){
-    var clicked by remember{ mutableStateOf(0) }
-    //var QuizDone by remember{mutableStateOf(false)}
-    //BodyContentHome()
-    //BodyContentAbout()
-    BodyContentGame()
-}
-
-@Composable
-fun BodyContentHome(modifier: Modifier = Modifier){
+fun BodyContentHome(modifier: Modifier = Modifier, navController: NavController){
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -124,7 +140,7 @@ fun BodyContentHome(modifier: Modifier = Modifier){
         Row {
             //Start now Button
             Button(
-                onClick = {}
+                onClick = {navController.navigate("gameScreen")}
             ) {
                 Text(stringResource(R.string.startnow_btn))
             }
@@ -136,7 +152,8 @@ fun BodyContentHome(modifier: Modifier = Modifier){
         Row {
             //About Button
             Button(
-                onClick = {}
+                //ganto po yung pag-route once the button was clicked
+                onClick = {navController.navigate("aboutScreen")}
             ) {
                 Text(stringResource(R.string.about_btn))
             }
@@ -149,7 +166,7 @@ fun BodyContentHome(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun BodyContentAbout(modifier: Modifier = Modifier){
+fun BodyContentAbout(modifier: Modifier = Modifier, navController: NavController){
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -167,6 +184,7 @@ fun BodyContentAbout(modifier: Modifier = Modifier){
                 text = "Name: Mark Alexis Jaudian Cabrera\nSection: BSIT-22A3\nSubject: Mobile Computing",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
+                color = Color.White,
                 modifier = Modifier
                     .wrapContentSize(Alignment.TopCenter)
                     .align(Alignment.Top)
@@ -181,6 +199,7 @@ fun BodyContentAbout(modifier: Modifier = Modifier){
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Justify,
+                color = Color.White,
                 modifier = Modifier
                     .wrapContentSize(Alignment.TopCenter)
                     .align(Alignment.Top)
@@ -190,7 +209,7 @@ fun BodyContentAbout(modifier: Modifier = Modifier){
         Row {
             //Back Button
             Button(
-                onClick = {}
+                onClick = {navController.navigate("homeScreen")}
             ) {
                 Text(stringResource(R.string.back_btn))
             }
@@ -203,19 +222,24 @@ fun BodyContentAbout(modifier: Modifier = Modifier){
 }
 
 @Composable//dito nangyayari yung pagdisplay ng POKEMON
-fun BodyContentGame(modifier: Modifier = Modifier) {
-    var clicked by remember { mutableStateOf(0) }
+fun BodyContentGame(modifier: Modifier = Modifier, navController: NavController) {
+    var answerKey by remember { mutableStateOf("Press Check Button") }
+    var answer by remember { mutableStateOf("") }
     var result by remember { mutableStateOf(1) }
     val imageResource = when (result) {
         1 -> R.drawable.pikachu
         2 -> R.drawable.bulbasaur
         else -> R.drawable.squirtle
     }
-    val pokemonName = when (result) {
-        1 -> R.string.pikachu
-        2 -> R.string.bulbasaur
-        else -> R.string.squirtle
+    var pokemonName by remember { mutableStateOf("") }
+    if(result == 1){
+        pokemonName = stringResource(R.string.pikachu)
+    }else if(result == 2){
+        pokemonName = stringResource(R.string.bulbasaur)
+    }else {
+        pokemonName = stringResource(R.string.squirtle)
     }
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -232,18 +256,17 @@ fun BodyContentGame(modifier: Modifier = Modifier) {
                 painter = painterResource(id = imageResource),
                 contentDescription = result.toString()
             )
-            Spacer(//para siyang margin para sa button
+            //para siyang margin para sa button
+            Spacer(
                 modifier = Modifier
                     .height(20.dp)
             )
         }
         Row {
-            val answer = remember { mutableStateOf("") }
-
             TextField(
-                value = answer.value, // Set the current value from the state variable
-                onValueChange = { answer.value = it }, // Update state on value change
-                label = { Text("Enter your answer..") },
+                value = answer, // Set the current value from the state variable
+                onValueChange = { answer = it }, // Update state on value change
+                label = { Text("Enter your answer in all caps..") },
                 modifier = Modifier
                     .fillMaxWidth(.8f)
                     .padding(top = 10.dp, bottom = 10.dp)
@@ -255,64 +278,45 @@ fun BodyContentGame(modifier: Modifier = Modifier) {
         }
         Row {
             Column {
-                Button(onClick = {}){
+                Button(onClick = {
+                    if (answer == pokemonName) {
+                        answerKey = "CORRECT"
+                       // Modifier.background(Color.Green)
+                    } else {
+                        answerKey = "WRONG"
+                        //Modifier.background(Color.Red)
+                    }
+                }
+                    ){
                     Text(stringResource(R.string.check_btn))
                 }
             }
             Column {
                 Button(onClick = {}){
-                    Text(stringResource(R.string.correct))
+                    Text(answerKey)
                 }
             }
         }
         Row {
             Column {
-                Button(
-                    onClick = {}
-                ){
-                    Text(stringResource(R.string.prev_btn))
-                }
-            }
-            Column {
-                Button(
-                    onClick = {clicked = 3}
-                ){
+                Button(onClick = {navController.navigate("homeScreen")}){
                     Text(stringResource(R.string.exit_btn))
                 }
             }
             Column {
-                Button(//dito nangyayari yung pagbigay ng randomise numbers from 1-6
-                    onClick = {
-                        result = (1..3).random()
-                    }
-                ) {//since naglagay ng button ung text yung nagsisilbi kung para saan yung button
-                    Text(stringResource(R.string.next_btn))
+                //dito nangyayari yung pagbigay ng randomise numbers from 1-6
+                Button(onClick = {result = (1..3).random()}) {
+                    //since naglagay ng button ung text yung nagsisilbi kung para saan yung button
+                    Text(stringResource(R.string.random_btn))
                 }
-                Spacer(//para siyang margin para sa button
+                //para siyang margin para sa button
+                Spacer(
                     modifier = Modifier
                         .height(16.dp)
                 )
             }
         }
     }
-    //kung 1 = check
-    //kung 2 = prev
-    //kung 3 = exit
-    //kung 4 = next
-    if(clicked == 1){
-        //
-    }else if (clicked == 2){
-        //
-    }else if (clicked == 3){
-        BodyContentHome()
-    }else if (clicked == 4){
-        //
-    }
-}
-
-@Composable
-fun BodyContent(){
-    SwitchScreen()
 }
 
 @Composable
@@ -370,14 +374,15 @@ fun Footer(){
                 text = "All Rights Reserved 2024. @PokemonQuizGame!",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
+                color = Color.White,
                 modifier = Modifier
                     .wrapContentSize(Alignment.TopCenter)
                     .align(Alignment.Top)
-
             )
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
