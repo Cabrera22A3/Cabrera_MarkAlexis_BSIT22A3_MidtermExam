@@ -291,8 +291,14 @@ fun BodyContentGame(modifier: Modifier = Modifier, navController: NavController)
                     Text(stringResource(R.string.check_btn))
                 }
             }
-            Column {
-                Button(onClick = {}){
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(.7f)
+            ){
+                Button(
+                    onClick = {}
+                )
+                {
                     Text(answerKey)
                 }
             }
