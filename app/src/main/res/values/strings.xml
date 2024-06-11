@@ -7,7 +7,7 @@
     <string name="about_btn">ABOUT</string>
     <string name="back_btn">BACK</string>
     <string name="exit_btn">EXIT</string>
-    <string name="random_btn">RANDOM</string>
+    <string name="random_btn">RANDOMIZE</string>
 
     //Checker Button
     <string name="check_btn">CHECK</string>
